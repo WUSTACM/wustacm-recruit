@@ -27,7 +27,7 @@ git --version
 完成后，浏览器地址应类似：
 
 ```text
-https://github.com/你的GitHub用户名/wustacm-recruit
+https://github.com/你的GitHub用户名/wustlaba-recruit
 ```
 
 ## 2. Clone 到电脑
@@ -39,7 +39,7 @@ https://github.com/你的GitHub用户名/wustacm-recruit
 截图中的 `jiangescn` 是示例用户名；你复制的地址应显示**你自己的 GitHub 用户名**。然后在 PowerShell 或 macOS“终端”中运行：
 
 ```sh
-git clone "刚才复制的 HTTPS 地址"
+git clone <刚才复制的 HTTPS 地址>
 cd wustacm-recruit
 ```
 
@@ -72,7 +72,7 @@ bash ./submit.sh
 脚本会从你 Clone 的 Fork 地址识别 GitHub 用户名，然后提示输入通知邮箱。成功后会显示一个文件名，例如：
 
 ```text
-submissions/jiangescn.age
+submissions/2026/jiangescn.age
 ```
 
 这个文件是加密后的内容。**不要把邮箱明文写进仓库文件、Commit 信息或 PR 描述。**
@@ -92,7 +92,7 @@ git status
 将下面命令中的 `jiangescn` 换成脚本显示的文件名对应的用户名：
 
 ```sh
-git add submissions/jiangescn.age
+git add submissions/2026/jiangescn.age
 git commit -m "Submit encrypted email"
 git push -u origin submit-email
 ```
@@ -112,9 +112,7 @@ git push -u origin submit-email
 - **head repository**：你自己的 Fork
 - **compare branch**：`submit-email`
 
-如果 GitHub 自动选中其他目标仓库，请将 **base repository** 改为 `WUSTACM/wustacm-recruit`。
-
-![PR 的目标仓库、来源分支和创建按钮示意图](images/pr-target.svg)
+如果 GitHub 自动选中其他目标仓库，请将 **base repository** 改为 `wustLABA/wustlaba-recruit`。
 
 标题可写 `Submit encrypted email`，描述可写 `已按教程提交加密邮箱`。最后点击 **Create pull request**。
 
