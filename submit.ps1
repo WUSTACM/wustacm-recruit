@@ -6,7 +6,9 @@ $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
 $ageExe = Join-Path $root 'tools\windows-amd64\age.exe'
 $publicKey = Join-Path $root 'public-key.txt'
-$submissions = Join-Path $root 'submissions'
+# 按提交年份归档，避免 submissions 根目录随年份增长堆积
+$year = (Get-Date).Year
+$submissions = Join-Path $root (Join-Path 'submissions' $year)
 
 if (-not (Test-Path -LiteralPath $ageExe -PathType Leaf)) {
     throw '仓库内缺少 tools/windows-amd64/age.exe，请重新 Clone 正式仓库。'
@@ -34,8 +36,8 @@ if (-not $remoteMatch.Success) {
     throw 'origin 不是可识别的 GitHub 仓库地址。请从自己的 Fork 复制 HTTPS 地址重新 Clone。'
 }
 $githubUser = $remoteMatch.Groups['owner'].Value.ToLowerInvariant()
-if ($githubUser -eq 'wustacm') {
-    throw '当前 Clone 的是 WUSTACM 原仓库。请先 Fork，再 Clone 你自己的 Fork。'
+if ($githubUser -eq 'wustlaba') {
+    throw '当前 Clone 的是招新组原仓库。请先 Fork，再 Clone 你自己的 Fork。'
 }
 
 if ([string]::IsNullOrWhiteSpace($Email)) {
@@ -65,5 +67,5 @@ if ((Get-Item -LiteralPath $output).Length -eq 0) {
 }
 
 Write-Host ''
-Write-Host ('已生成：submissions/' + $githubUser + '.age')
+Write-Host ('已生成：submissions/' + $year + '/' + $githubUser + '.age')
 Write-Host '下一步：运行 git status，只添加上面这个 .age 文件，然后 Commit、Push 并创建 PR。'
