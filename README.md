@@ -65,8 +65,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\submit.ps1
 
 macOS“终端”：
 
-```sh
-bash ./submit.sh
+```zsh
+chmod -x submit.sh && ./submit.sh
 ```
 
 脚本会从你 Clone 的 Fork 地址识别 GitHub 用户名，然后提示输入通知邮箱。成功后会显示一个文件名，例如：
