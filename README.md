@@ -1,6 +1,6 @@
 # 第一次向招新仓库提交 Pull Request
 
-任务：**用仓库里的工具加密你的通知邮箱，再把生成的 `.age` 文件提交给 WUSTACM**。
+任务：**用仓库里的工具加密你的通知邮箱，再把生成的 `.age` 文件提交给 wustLABA**。
 
 我们之后会用这个邮箱发送面试通知。
 
@@ -40,10 +40,10 @@ https://github.com/你的GitHub用户名/wustlaba-recruit
 
 ```sh
 git clone <刚才复制的 HTTPS 地址>
-cd wustacm-recruit
+cd wustlaba-recruit
 ```
 
-例如，截图中的用户名是 `jiangescn`，地址就是 `https://github.com/jiangescn/wustacm-recruit.git`。命令中的引号可以保留。
+例如，截图中的用户名是 `jiangescn`，地址就是 `https://github.com/jiangescn/wustlaba-recruit.git`。命令中的引号可以保留。
 
 ## 3. 创建分支
 
@@ -85,7 +85,7 @@ submissions/2026/jiangescn.age
 git status
 ```
 
-你应能看到 `submissions/你的用户名.age`。下图里的 `jiangescn` 只是示例：
+你应能看到 `submissions/2026/你的用户名.age`（年份按提交时的当前年份自动确定）。下图里的 `jiangescn` 只是示例：
 
 ![git status 和只添加加密文件的示意图](images/git-status.svg)
 
@@ -107,7 +107,7 @@ git push -u origin submit-email
 
 点击后确认：
 
-- **base repository**：`WUSTACM/wustacm-recruit`
+- **base repository**：`wustLABA/wustlaba-recruit`
 - **base branch**：`main`
 - **head repository**：你自己的 Fork
 - **compare branch**：`submit-email`
