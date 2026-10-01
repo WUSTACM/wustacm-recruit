@@ -20,7 +20,7 @@ git --version
 
 ## 1. Fork 仓库
 
-打开招新组发布的原仓库，点页面右上角的 **Fork**，将仓库复制到你自己的 GitHub 账号下。
+打开本仓库 <https://github.com/wustLABA/wustlaba-recruit>，点页面右上角的 **Fork**，将仓库复制到你自己的 GitHub 账号下。
 
 <img src="images/fork-current.png" width="460" alt="GitHub 仓库页面中标出的 Fork 按钮" />
 
