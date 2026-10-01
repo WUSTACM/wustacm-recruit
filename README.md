@@ -124,42 +124,32 @@ git push -u origin submit-email
 
 ---
 
-# 新生参与流程：加入 LABA 并完成第一次贡献
+# 可选：加入 wustLABA 组织
 
-上面这一步（提交加密邮箱）是**招新作业**。下面要介绍的，是加入我们社团的完整路径：**加入 wustLABA 组织 → 获得项目权限 → 完成你的第一次 GitHub 贡献**。
+> **这一节是可选环节，不影响招新作业。** 如果你希望加入我们的 GitHub 组织、参与社团项目，可以按这里自助申请。
 
-没接触过 Git 和 GitHub 也完全没问题，跟着做就行。整个过程大约 20 分钟。
+加入后你就成为组织成员，能看到并参与社团的公开项目，不再是旁观者。
 
-## 一、先理解两件事
+## 权限是怎么来的？
 
-**第一，GitHub 是什么？**
-
-GitHub 是程序员共享代码的地方。每个人都把自己的代码放上去，别人可以看到、可以提建议、也可以一起改。我们社团的项目都放在 GitHub 上。
-
-**第二，我们为什么要你走一遍这个流程？**
-
-因为这是真实的协作方式。你以后参与社团项目时，每天做的事情就是这样：把代码拉下来、改一改、提交上去、让别人审查。先走一遍最简版本，后面就不陌生了。
-
-## 二、权限是怎么来的？
-
-这里有个概念要提前说清楚，能帮你少走弯路：
+先理解这点能帮你少走弯路：
 
 ```text
 wustLABA Organization（我们的组织）
         ↓
 LABA-Members Team（成员团队）
         ↓
-项目权限：可以修改某些仓库
+项目权限：可以参与某些仓库
    ├─ first-contributions
    ├─ wustlaba-recruit（就是本仓库）
    └─ 其他社团项目
 ```
 
-你申请的**是加入组织**，而不是某个单独仓库的权限。加入组织后你会自动进入 **LABA-Members** 团队，从而获得团队当前已配置的那批仓库的写权限。
+你申请的**是加入组织**，而不是某一个仓库的单独权限。加入组织后你会自动进入 **LABA-Members** 团队，从而获得团队当前已配置的那批仓库的权限。
 
-所以：**不是"申请一个仓库、批一个仓库"**，而是一次加入、后续都能参与。今后社团新增项目时，管理员把仓库挂到团队上即可，你无需重新申请。
+好处是：一次加入，后续都能参与。今后社团新增项目时，管理员把仓库挂到团队上即可，你无需重新申请。
 
-## 三、申请加入组织
+## 申请步骤
 
 ### 第一步：打开申请页面
 
@@ -167,7 +157,7 @@ LABA-Members Team（成员团队）
 
 <https://github.com/wustLABA/first-contributions/issues/new?template=laba-contribution-access.yml>
 
-你也可以先进仓库首页 <https://github.com/wustLABA/first-contributions>，点 **Issues → New issue**，再选择「申请加入 wustLABA Organization」。
+也可以先进仓库首页 <https://github.com/wustLABA/first-contributions>，点 **Issues → New issue**，再选择「申请加入 wustLABA Organization」。
 
 ### 第二步：勾选确认框，提交
 
@@ -191,7 +181,7 @@ LABA-Members Team（成员团队）
 
 处理成功后，这个 Issue 会自动关闭。
 
-### 第四步：接受邀请（最容易卡住的一步）
+### 第四步：接受邀请
 
 去下面任一位置接受邀请：
 
@@ -199,57 +189,11 @@ LABA-Members Team（成员团队）
 - **你的邮箱**：找一封来自 GitHub 的邀请邮件
 - **直接打开**：<https://github.com/orgs/wustLABA/invitation>
 
-> ⚠️ **没有接受邀请之前，你 `git push` 会失败，报 `403 Permission denied`。**
-> 这是最常见的问题。遇到 403，先回来确认邀请接受了没有。
+> ⚠️ **没接受邀请就不算加入成功。** 这是最常见的卡点——只提交了 Issue 但没点接受，权限不会生效。
 >
-> 另外，接受之后权限可能还要**等几秒到几分钟**才生效。刚接受就报错，稍等一下再试。
+> 另外，接受之后权限可能还要**等几秒到几分钟**才完全生效，稍等一下即可。
 
-## 四、完成你的第一次贡献
-
-接受邀请后，来做你的第一次真实贡献。
-
-> 💡 **注意：这里不需要 Fork。**
-> 你已经是组织成员了，直接把分支推到官方仓库即可。这和你在网上看到的很多教程不一样，因为那些教程是给"没有权限的外部贡献者"写的。
-
-```bash
-# 1. 把仓库下载到本地（直接 clone 官方仓库）
-git clone https://github.com/wustLABA/first-contributions.git
-cd first-contributions
-
-# 2. 创建一个属于你自己的分支（分支名带上你的标识，避免和别人撞名）
-git checkout -b laba/你的名字
-
-# 3. 创建你的报名文件
-#    路径和文件名有约定格式，具体见仓库内说明
-mkdir -p docs/laba
-# 然后用编辑器创建 docs/laba/你的GitHub用户名.md
-
-# 4. 提交
-git add .
-git commit -m "docs: add 你的GitHub用户名 LABA registration"
-
-# 5. 推送你的分支
-git push -u origin laba/你的名字
-```
-
-推送成功后，终端会直接给你一个创建 Pull Request 的链接。也可以打开 <https://github.com/wustLABA/first-contributions/pulls>，点 **New pull request**，选择你的分支，填好说明后提交。
-
-**Pull Request（简称 PR）是什么？** 就是你向项目提交修改建议的方式。你改好了，说一声"我改完了，你们看看要不要收下"，负责人审核后就会合并进主项目。
-
-这一步完成，你的第一次开源贡献就达成了 🎉
-
-## 五、常见问题
-
-### Q：为什么我看的教程都要先 Fork，这里却不用？
-
-因为你是**组织成员**，对仓库本来就有写权限，可以直接建分支推送。Fork 是给没有任何权限的外部人用的替代方案。你以后给别人的开源项目提贡献时，才需要 Fork。
-
-### Q：我提交申请了，为什么还是没有权限？
-
-按顺序检查两件事：
-
-1. **接受组织邀请了吗？** 去 <https://github.com/orgs/wustLABA/invitation> 看看。没接受就 push，一定会 403。
-2. **等够时间了吗？** 接受之后权限生效有延迟，等几分钟再试。
+## 常见问题
 
 ### Q：收不到邀请怎么办？
 
@@ -261,21 +205,17 @@ git push -u origin laba/你的名字
 
 如果 Issue 上标着失败标签，说明需要管理员人工处理，**等着就好，不要重复开新的 Issue**。
 
-### Q：`git push` 报 403 Permission denied
+### Q：我提交申请了，为什么还是没加入成功？
 
-三个原因，按顺序排查：
-
-1. **还没接受邀请** —— 最常见，见上面的说明
-2. **推错分支了** —— 确认你推的是自己的分支，不是 `main`
-3. **本地凭据过期** —— 清除后重试：`git credential-manager erase`
+大概率是**没接受邀请**。去 <https://github.com/orgs/wustLABA/invitation> 看看有没有待接受的邀请。接受之后如果还没生效，等几分钟再试。
 
 ### Q：我可以提交多次申请吗？
 
 可以，但**不会重复收到邀请**。系统会认出来你已经有一条待接受的邀请，然后提醒你去接受。如果你已经在组织里，它会告诉你无需重复申请。
 
-### Q：我能写哪些仓库？
+### Q：加入组织后我能做什么？
 
-LABA-Members 团队当前挂载的仓库。目前包括 `first-contributions`、`wustlaba-recruit` 等。加入组织后这些都会对你开放，具体范围由管理员维护。
+能参与 LABA-Members 团队当前挂载的仓库，目前包括 `first-contributions`、`wustlaba-recruit` 等。具体范围由管理员维护。组织内未挂载到该团队的仓库，你依然没有权限。
 
 ### Q：我有问题可以开 Issue 问吗？
 
@@ -283,5 +223,5 @@ LABA-Members 团队当前挂载的仓库。目前包括 `first-contributions`、
 
 ---
 
-**完整的中文详细指南**（含给管理员的配置说明）见：
+**完整的中文详细指南**见：
 <https://github.com/wustLABA/first-contributions/blob/main/docs/zh-CN/laba-access.md>
