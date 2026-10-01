@@ -11,18 +11,20 @@
 
 from __future__ import annotations
 
-import os
 import queue
+import re
 import subprocess
 import sys
 import threading
 from pathlib import Path
-from typing import Iterable
 
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
 APP_TITLE = "age 批量解密工具"
+
+# 选中 identity 文件后在文本框里显示的占位内容（真实私钥不显示在界面上）
+PLACEHOLDER_KEY = "AGE-SECRET-KEY-（已从文件读取，内容不显示）"
 
 # age 的退出码无法区分「私钥不匹配」和「文件损坏」，因此靠 stderr 关键字判断，
 # 目的是给管理员一句可操作的中文提示，而不是原样抛出英文报错。
@@ -119,6 +121,8 @@ class DecryptApp(ttk.Frame):
 
         self.key_text = tk.Text(key_box, height=3, wrap="none")
         self.key_text.grid(row=0, column=0, columnspan=2, sticky="ew")
+        # 手动编辑即放弃之前选中的 identity 文件，见 _on_key_edited
+        self.key_text.bind("<Key>", self._on_key_edited)
         ttk.Label(
             key_box,
             text="粘贴 AGE-SECRET-KEY-... （可整段粘贴 identity 文件内容）",
@@ -204,8 +208,29 @@ class DecryptApp(ttk.Frame):
             return
         self.identity_file = Path(path)
         self.key_text.delete("1.0", "end")
-        self.key_text.insert("1.0", "AGE-SECRET-KEY-（已从文件读取，内容不显示）")
+        self.key_text.insert("1.0", PLACEHOLDER_KEY)
         self._log(f"已选择私钥文件：{path}", "info")
+
+    def _on_key_edited(self, _event: tk.Event) -> None:
+        """用户手动改动私钥文本框时，丢弃先前选中的 identity 文件。
+
+        否则「先选文件、再粘贴新私钥」会让 _resolve_identity 继续用旧文件，
+        粘贴的内容被静默忽略，表现为「私钥是对的却解不开」。
+
+        <Key> 在文本真正插入之前触发，因此用 after_idle 延后到本次编辑完成后
+        再读取内容，否则占位符判断会滞后一个按键。
+        """
+        if self.identity_file is None:
+            return
+        self.after_idle(self._drop_identity_if_edited)
+
+    def _drop_identity_if_edited(self) -> None:
+        if self.identity_file is None:
+            return
+        if self.key_text.get("1.0", "end").strip() == PLACEHOLDER_KEY:
+            return
+        self.identity_file = None
+        self._log("已手动编辑私钥内容，不再使用之前选择的 identity 文件。", "info")
 
     def _clear_key(self) -> None:
         self.key_text.delete("1.0", "end")
@@ -267,11 +292,19 @@ class DecryptApp(ttk.Frame):
             return self.identity_file, None
 
         raw = self.key_text.get("1.0", "end")
+
+        # 占位符必须在 parse 之前拦掉：它同样以 AGE-SECRET-KEY- 开头，
+        # 会被 parse 当成私钥截取出来，进而写出一个无效的临时 identity 文件
+        if PLACEHOLDER_KEY in raw:
+            return None, "私钥文本框是占位内容，请重新选择 identity 文件。"
+
         key = parse_identity_text(raw)
         if not key:
             return None, "未找到私钥：请粘贴以 AGE-SECRET-KEY- 开头的文本，或选择 identity 文件。"
-        if key == "AGE-SECRET-KEY-" or "已从文件读取" in raw:
-            return None, "私钥文本框是占位内容，请重新选择 identity 文件。"
+        # age 私钥是 Bech32 编码，只含大写字母和数字；脏内容提前报错，
+        # 免得 age 返回难以理解的解析错误
+        if not re.fullmatch(r"AGE-SECRET-KEY-1[A-Z0-9]{50,}", key):
+            return None, "私钥格式不正确：应为 AGE-SECRET-KEY-1 开头的一整行内容。"
 
         target = tmp_dir / "identity.txt"
         # 只写私钥那一行，临时文件在 finally 中删除

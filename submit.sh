@@ -19,8 +19,17 @@ esac
 [[ -f "$age_source" ]] || fail "仓库内缺少 age 程序，请重新 Clone 正式仓库。"
 [[ -f "$public_key" ]] || fail "缺少 public-key.txt，请联系招新负责人。"
 
-recipient="$(awk 'NF && $1 !~ /^#/ { print $0 }' "$public_key")"
+# 必须先剥掉可能的 UTF-8 BOM 再交给 awk：
+# BOM 会让首行首个字段不等于 "#"，注释行就会被当成公钥一起输出，
+# 导致下面的正则校验失败，脚本直接拒绝运行。
+recipient="$(sed '1s/^\xEF\xBB\xBF//' "$public_key" | awk 'NF && $1 !~ /^#/ { print $0 }')"
 [[ "$recipient" =~ ^age1[a-z0-9]+$ ]] || fail "public-key.txt 尚未设置正式 age 公钥，请等待管理员完成配置。"
+
+# age -R 不认注释行，会报 malformed recipient。
+# 上面已提取出唯一公钥，这里写进临时文件再传给 age，
+# 使得 public-key.txt 带注释时脚本依然可用。
+recipient_file="$(mktemp "${TMPDIR:-/tmp}/wustlaba-recipient.XXXXXX")"
+printf '%s\n' "$recipient" > "$recipient_file"
 
 remote="$(git -C "$root" remote get-url origin 2>/dev/null)" ||
     fail "无法读取 origin。请先 Fork 仓库，再 Clone 你自己的 Fork。"
@@ -47,11 +56,12 @@ mkdir -p "$root/submissions/$year"
 output="$root/submissions/$year/$github_user.age"
 
 # Run a temporary copy so executable permission is not changed in the Git checkout.
-temp_age="$(mktemp /tmp/wustacm-age.XXXXXX)"
-trap 'rm -f "$temp_age"' EXIT
+temp_age="$(mktemp /tmp/wustlaba-age.XXXXXX)"
+# 单个 trap 同时清理 age 临时副本和公钥临时文件
+trap 'rm -f "$temp_age" "$recipient_file"' EXIT
 cp "$age_source" "$temp_age"
 chmod 700 "$temp_age"
-printf '%s\n' "$email" | "$temp_age" -R "$public_key" -o "$output" ||
+printf '%s\n' "$email" | "$temp_age" -R "$recipient_file" -o "$output" ||
     fail "加密失败，请检查 public-key.txt 并重新运行脚本。"
 [[ -s "$output" ]] || fail "加密文件为空，请联系招新负责人。"
 

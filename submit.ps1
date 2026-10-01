@@ -25,6 +25,13 @@ $recipients = @(Get-Content -LiteralPath $publicKey | Where-Object {
 if ($recipients.Count -ne 1 -or $recipients[0].Trim() -notmatch '^age1[a-z0-9]+$') {
     throw 'public-key.txt 尚未设置正式 age 公钥，请等待管理员完成配置。'
 }
+$recipient = $recipients[0].Trim()
+
+# age -R 不认注释行和 BOM，会报 malformed recipient。
+# 上面已校验出唯一公钥，这里把它单独写进临时文件再传给 age，
+# 使得 public-key.txt 带注释或 BOM 时脚本依然可用。
+$recipientFile = Join-Path ([System.IO.Path]::GetTempPath()) ('wustlaba-recipient-' + [guid]::NewGuid().ToString('N') + '.txt')
+[System.IO.File]::WriteAllText($recipientFile, $recipient + "`n", [System.Text.UTF8Encoding]::new($false))
 
 $remote = & git -C $root remote get-url origin 2>$null
 if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($remote)) {
@@ -58,12 +65,18 @@ if (-not (Test-Path -LiteralPath $submissions -PathType Container)) {
 $output = Join-Path $submissions ($githubUser + '.age')
 
 # Email is passed to age through stdin; no plaintext file is created.
-$Email | & $ageExe -R $publicKey -o $output
-if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $output -PathType Leaf)) {
-    throw '加密失败，请检查 public-key.txt 并重新运行脚本。'
+try {
+    $Email | & $ageExe -R $recipientFile -o $output
+    if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $output -PathType Leaf)) {
+        throw '加密失败，请检查 public-key.txt 并重新运行脚本。'
+    }
+    if ((Get-Item -LiteralPath $output).Length -eq 0) {
+        throw '加密文件为空，请联系招新负责人。'
+    }
 }
-if ((Get-Item -LiteralPath $output).Length -eq 0) {
-    throw '加密文件为空，请联系招新负责人。'
+finally {
+    # 临时公钥文件必须删除，避免在 %TEMP% 里留下垃圾
+    Remove-Item -LiteralPath $recipientFile -Force -ErrorAction SilentlyContinue
 }
 
 Write-Host ''
