@@ -103,6 +103,8 @@ git push -u origin submit-email
 
 回到你自己的 Fork 页面，通常会看到 **Compare & pull request** 按钮：
 
+![image-20261002205843777](README.assets/image-20261002205843777.png)
+
 <img src="images/compare-pr-current.png" width="820" alt="个人 Fork 页面上标出的 Compare & pull request 按钮" />
 
 点击后确认：
