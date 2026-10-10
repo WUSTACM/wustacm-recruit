@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="220" viewBox="0 0 900 220" role="img" aria-labelledby="title desc">
   <title id="title">git status 显示待提交的加密文件</title>
-  <desc id="desc">示意终端里只出现 submissions/jiangescn.age，然后只添加该文件。</desc>
+  <desc id="desc">示意终端里只出现 submissions/2026/jiangescn.age，然后只添加该文件。</desc>
   <rect width="900" height="220" rx="16" fill="#0d1117"/>
   <circle cx="28" cy="25" r="6" fill="#ff5f56"/>
   <circle cx="49" cy="25" r="6" fill="#ffbd2e"/>
   <circle cx="70" cy="25" r="6" fill="#27c93f"/>
   <text x="28" y="79" font-family="Consolas, Menlo, monospace" font-size="20" fill="#e6edf3">$ git status --short</text>
-  <text x="28" y="119" font-family="Consolas, Menlo, monospace" font-size="20" fill="#7ee787">?? submissions/jiangescn.age</text>
-  <text x="28" y="171" font-family="Consolas, Menlo, monospace" font-size="20" fill="#e6edf3">$ git add submissions/jiangescn.age</text>
+  <text x="28" y="119" font-family="Consolas, Menlo, monospace" font-size="20" fill="#7ee787">?? submissions/2026/jiangescn.age</text>
+  <text x="28" y="171" font-family="Consolas, Menlo, monospace" font-size="20" fill="#e6edf3">$ git add submissions/2026/jiangescn.age</text>
 </svg>

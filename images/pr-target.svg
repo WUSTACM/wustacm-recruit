@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="230" viewBox="0 0 900 230" role="img" aria-labelledby="title desc">
   <title id="title">Pull Request 的目标与来源</title>
-  <desc id="desc">目标是 WUSTACM 招新仓库的 main，来源是自己 Fork 中的 submit-email 分支。</desc>
+  <desc id="desc">目标是 wustLABA 招新仓库的 main，来源是自己 Fork 中的 submit-email 分支。</desc>
   <rect width="900" height="230" rx="16" fill="#f6f8fa"/>
   <text x="34" y="43" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#24292f">创建 Pull Request 时确认方向</text>
   <rect x="34" y="70" width="364" height="92" rx="10" fill="#ffffff" stroke="#d0d7de" stroke-width="2"/>
   <text x="54" y="105" font-family="Arial, sans-serif" font-size="15" fill="#57606a">base · 提交到</text>
-  <text x="54" y="135" font-family="Arial, sans-serif" font-size="19" fill="#24292f">WUSTACM / 招新仓库 : main</text>
+  <text x="54" y="135" font-family="Arial, sans-serif" font-size="19" fill="#24292f">wustLABA / 招新仓库 : main</text>
   <path d="M476 116H423m16-14-16 14 16 14" fill="none" stroke="#0969da" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
   <rect x="500" y="70" width="366" height="92" rx="10" fill="#ffffff" stroke="#d0d7de" stroke-width="2"/>
   <text x="520" y="105" font-family="Arial, sans-serif" font-size="15" fill="#57606a">compare · 来自</text>

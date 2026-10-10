@@ -1,0 +1,10 @@
+# 私钥绝不允许进仓库
+*identity*.txt
+AGE-SECRET-KEY-*
+
+# 解密工具构建产物：exe 通过 GitHub Release 分发，不进版本库
+tools/decrypt-gui/dist/
+tools/decrypt-gui/build/
+tools/decrypt-gui/*.spec
+tools/decrypt-gui/crash.log
+__pycache__/
